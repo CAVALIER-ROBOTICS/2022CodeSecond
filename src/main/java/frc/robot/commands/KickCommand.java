@@ -5,42 +5,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.HopperSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class IntakeCommand extends CommandBase {
-  /** Creates a new IntakeCommand. */
+public class KickCommand extends CommandBase {
+  /** Creates a new KickCommand. */
+  ShooterSubsystem shooterSub;
 
-  IntakeSubsystem intakeSub;
-  HopperSubsystem hopperSub;
-
-  public IntakeCommand(IntakeSubsystem i, HopperSubsystem h) {
+  public KickCommand(ShooterSubsystem k) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intakeSub = i;
-    hopperSub = h;
-    addRequirements(i, h);
+    shooterSub = k;
+    addRequirements(k);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeSub.setIntakeMotor(.7);
-    hopperSub.setMotors(.5);
+    shooterSub.setKicker(0.8);
+    shooterSub.setShooter(.7);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-    
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    intakeSub.setIntakeMotor(0);
-    hopperSub.setMotors(0);
+    shooterSub.setKicker(0);
+    shooterSub.setShooter(0);
   }
 
   // Returns true when the command should end.

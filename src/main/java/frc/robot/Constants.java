@@ -45,6 +45,7 @@ public final class Constants {
             // Assumes the encoders are directly mounted on the wheel shafts
             (wheelDiamter * Math.PI) / (double) encoderCPR;
 
+        public static double acceptedVolts = 30;
 
         public static final double XController = 1;
         public static final double YController = 1;

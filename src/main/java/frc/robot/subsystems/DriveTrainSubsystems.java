@@ -158,7 +158,7 @@ public class DriveTrainSubsystems extends SubsystemBase implements DriveTrainCon
 
   public double getSpeed()
   {
-    double speed = states[0].speedMetersPerSecond / -maxVelocityPerSecond * maxVoltage;
+    double speed = states[0].speedMetersPerSecond / maxVelocityPerSecond * maxVoltage;
     return speed;
   }
 }

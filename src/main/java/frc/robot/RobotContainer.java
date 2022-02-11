@@ -17,18 +17,23 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.FieldDriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.KickCommand;
 import frc.robot.commands.LowerCommand;
 import frc.robot.commands.RaiseCommand;
 import frc.robot.commands.RobotDriveCommand;
+import frc.robot.commands.StartTurretCommand;
+import frc.robot.commands.TurnTurretCommand;
 import frc.robot.subsystems.DriveTrainSubsystems;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -47,6 +52,7 @@ public class RobotContainer {
   LimelightSubsystem limeSub = new LimelightSubsystem();
   HopperSubsystem hopperSub = new HopperSubsystem();
   IntakeSubsystem intakeSub = new IntakeSubsystem();
+  ShooterSubsystem shooterSub = new ShooterSubsystem();
   PathPlannerTrajectory path;
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -56,7 +62,10 @@ public class RobotContainer {
     // Configure the button bindings
     // configureButtonBindings();
 
-    // turretSub.setDefaultCommand(new AimCommand(turretSub, limeSub));
+    turretSub.setDefaultCommand(new SequentialCommandGroup(
+      new TurnTurretCommand(turretSub),
+      new StartTurretCommand(turretSub),
+      new AimCommand(turretSub, limeSub)));
 
     // creates conditional command
     // ConditionalCommand driveCommand = new ConditionalCommand(
@@ -102,7 +111,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     JoystickButton reset = new JoystickButton(driver, 4);
     JoystickButton changeDrive = new JoystickButton(driver,2);
-    // JoystickButton intake = new JoystickButton(driver, 3);
+    JoystickButton intake = new JoystickButton(driver, 7);
+    JoystickButton shoot = new JoystickButton(driver, 8);
     // JoystickButton raise = new JoystickButton(driver, 6);
     // JoystickButton lower = new JoystickButton(driver, 5);
 
@@ -111,7 +121,8 @@ public class RobotContainer {
     // lower.whenActive(new InstantCommand(() -> intakeSub.setRaiseMotor(-0.1), intakeSub));
     // raise.whenPressed(new RaiseCommand(intakeSub));
     // lower.whenPressed(new LowerCommand(intakeSub));
-    // intake.whenActive(new IntakeCommand(driveSub, intakeSub));
+    shoot.whileActiveContinuous(new KickCommand(shooterSub));
+    intake.whileActiveContinuous(new IntakeCommand(intakeSub, hopperSub));
     reset.whenPressed(new InstantCommand(driveSub::zeroGyroscope, driveSub));
 
     changeDrive.toggleWhenPressed(new RobotDriveCommand(

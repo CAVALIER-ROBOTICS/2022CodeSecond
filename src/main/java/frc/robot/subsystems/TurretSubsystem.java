@@ -15,6 +15,7 @@ public class TurretSubsystem extends SubsystemBase {
   /** Creates a new TurretSubsystem. */
   CANSparkMax turret = new CANSparkMax(Constants.turretID, MotorType.kBrushless);
   RelativeEncoder encoder = turret.getEncoder();
+  public int acceptedVolts = 30;
 
   boolean right = false;
 
@@ -22,7 +23,7 @@ public class TurretSubsystem extends SubsystemBase {
   
   public TurretSubsystem() 
   {
-    encoder.setPosition(0);
+    // encoder.setPosition(0);
   }
 
   public double getPos()
@@ -30,47 +31,57 @@ public class TurretSubsystem extends SubsystemBase {
     return encoder.getPosition();
   }
 
+  public double getVolt()
+  {
+    return turret.getOutputCurrent();
+  }
+
   public void setTurret(double volt)
   {
     turret.set(volt);
+    //  if(volt>1||volt<-1) {
+    //    SmartDashboard.putBoolean("itShit", true);
+    //  }
+    SmartDashboard.putNumber("volts", volt);
+
   }
 
-  public void aim(double volt)
+  public void updateEnc()
   {
-    if(getPos()>2700&&!left)
+    encoder.setPosition(0);
+  }
+
+  public void aim(double x)
+  {
+    if(getPos()>2 && getPos()<40)
     {
-      right = true;
-      setTurret(-0.01);
-    }
-    else if(getPos()<500&&!right)
-    {
-      left = true;
-      setTurret(0.01);
+      setTurret(x);
     }
 
-    if(right && getPos()<700)
+    else if(getPos()<2)
     {
-      right = false;
-      setTurret(0);
+      while(getPos()<38)
+      {
+        setTurret(.2);
+      }
+      // setTurret(0);
     }
-
-    if(left && getPos()>2500)
+    else if(getPos()>40)
     {
-      left = false;
-      setTurret(0);
+      while(getPos()>4)
+      {
+        setTurret(-.2);
+      }
+      // setTurret(0);
     }
-
-    if(!right&&!left)
-    {
-      setTurret(volt);
-    }
+    SmartDashboard.putNumber("x", x);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Turret Enc", encoder.getPosition());
-    SmartDashboard.putBoolean("right", right);
-    SmartDashboard.putBoolean("Left", left);
+    // SmartDashboard.putNumber("Turret Enc", encoder.getPosition());
+    // SmartDashboard.putBoolean("right", right);
+    // SmartDashboard.putBoolean("Left", left);
   }
 }

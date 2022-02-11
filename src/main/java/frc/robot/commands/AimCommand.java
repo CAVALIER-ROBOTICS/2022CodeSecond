@@ -17,14 +17,14 @@ public class AimCommand extends PIDCommand {
   public AimCommand(TurretSubsystem turretSub, LimelightSubsystem limeSub) {
     super(
         // The controller that the command will use
-        new PIDController(.1, .1, 0),
+        new PIDController(0.01, 0, 0),
         // This should return the measurement
         limeSub::getX,
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
-          turretSub.setTurret(output);
+          turretSub.aim(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.

@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,15 +16,19 @@ public class HopperSubsystem extends SubsystemBase {
   CANSparkMax hopperFloor = new CANSparkMax(Constants.floorID, MotorType.kBrushless);
   CANSparkMax hopperWall = new CANSparkMax(Constants.wallID, MotorType.kBrushless);
   
-  public HopperSubsystem() {}
+  public HopperSubsystem() 
+  {
+    hopperWall.follow(hopperFloor);
+    hopperFloor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    hopperWall.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    hopperFloor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+    hopperWall.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+  }
 
-  public void setHopperFloor(double x){
+  public void setMotors(double x){
     hopperFloor.set(x);
   }
 
-  public void setHopperWall(double x){
-    hopperWall.set(x);
-  }
 
   @Override
   public void periodic() {
