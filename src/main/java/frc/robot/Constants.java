@@ -24,8 +24,8 @@ public final class Constants {
     public static final int intakeID = 20;
     public static final int raiseID = 19;
     public static final int kickerID = 13;
-    public static final int leftShootID = 14;
-    public static final int rightShooterID = 15;
+    public static final int leftShootID = 15;
+    public static final int rightShooterID = 14;
     public static final int hoodID = 16;
 
     public final static SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(

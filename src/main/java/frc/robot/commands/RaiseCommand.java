@@ -37,10 +37,7 @@ public class RaiseCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(intakeSub.getRaiseEnc()>10)
-    {
-      return true;
-    }
+    
     return false;
   }
 }

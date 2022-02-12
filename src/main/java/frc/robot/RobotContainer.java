@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -26,8 +27,12 @@ import frc.robot.commands.FieldDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.KickCommand;
 import frc.robot.commands.LowerCommand;
+import frc.robot.commands.LowerHoodCommand;
 import frc.robot.commands.RaiseCommand;
+import frc.robot.commands.RaiseHoodCommand;
 import frc.robot.commands.RobotDriveCommand;
+import frc.robot.commands.ShootCommand;
+import frc.robot.commands.ShootPIDCommand;
 import frc.robot.commands.StartTurretCommand;
 import frc.robot.commands.TurnTurretCommand;
 import frc.robot.subsystems.DriveTrainSubsystems;
@@ -62,30 +67,11 @@ public class RobotContainer {
     // Configure the button bindings
     // configureButtonBindings();
 
-    turretSub.setDefaultCommand(new SequentialCommandGroup(
-      new TurnTurretCommand(turretSub),
-      new StartTurretCommand(turretSub),
-      new AimCommand(turretSub, limeSub)));
+    // turretSub.setDefaultCommand(new SequentialCommandGroup(
+    //   new TurnTurretCommand(turretSub),
+    //   new StartTurretCommand(turretSub),
+    //   new AimCommand(turretSub, limeSub)));
 
-    // creates conditional command
-    // ConditionalCommand driveCommand = new ConditionalCommand(
-    //     new RobotDriveCommand
-    //     (
-    //       () -> modifyAxis(driver.getRawAxis(1)) * DriveTrainSubsystems.maxVelocityPerSecond,
-    //       () -> modifyAxis(driver.getRawAxis(0)) * DriveTrainSubsystems.maxVelocityPerSecond,
-    //       () -> modifyAxis(driver.getRawAxis(4)) * DriveTrainSubsystems.maxAngularVelocityPerSecond,
-    //       driveSub
-    //     ),
-    //     new FieldDriveCommand
-    //     (
-    //       () -> modifyAxis(driver.getRawAxis(1)) * DriveTrainSubsystems.maxVelocityPerSecond,
-    //       () -> modifyAxis(driver.getRawAxis(0)) * DriveTrainSubsystems.maxVelocityPerSecond,
-    //       () -> modifyAxis(driver.getRawAxis(4)) * DriveTrainSubsystems.maxAngularVelocityPerSecond,
-    //       driveSub
-    //     ),
-    //     () -> true);
-        // () -> driver.getRawButtonPressed(1));
-        
 
     // driveSub.setDefaultCommand(driveCommand);
 
@@ -113,15 +99,21 @@ public class RobotContainer {
     JoystickButton changeDrive = new JoystickButton(driver,2);
     JoystickButton intake = new JoystickButton(driver, 7);
     JoystickButton shoot = new JoystickButton(driver, 8);
-    // JoystickButton raise = new JoystickButton(driver, 6);
-    // JoystickButton lower = new JoystickButton(driver, 5);
+    // JoystickButton raiseIntake = new JoystickButton(driver, 3);
+    // JoystickButton lowerIntake = new JoystickButton(driver, 1);
+    JoystickButton raiseHood = new JoystickButton(driver, 1);
+    JoystickButton lowerHood = new JoystickButton(driver, 3);
 
-
-    // raise.whenActive(new InstantCommand(() -> intakeSub.setRaiseMotor(0.1), intakeSub));
-    // lower.whenActive(new InstantCommand(() -> intakeSub.setRaiseMotor(-0.1), intakeSub));
-    // raise.whenPressed(new RaiseCommand(intakeSub));
-    // lower.whenPressed(new LowerCommand(intakeSub));
-    shoot.whileActiveContinuous(new KickCommand(shooterSub));
+ 
+    raiseHood.whileActiveContinuous(new RaiseHoodCommand(shooterSub));
+    lowerHood.whileActiveContinuous(new LowerHoodCommand(shooterSub));
+    // raise.whileActiveContinuous(new InstantCommand(() -> intakeSub.setRaiseMotor(0.1), intakeSub));
+    // lower.whileActiveContinuous(new InstantCommand(() -> intakeSub.setRaiseMotor(-0.1), intakeSub));
+    // raiseIntake.whileActiveContinuous(new RaiseCommand(intakeSub));
+    // lowerIntake.whileActiveContinuous(new LowerCommand(intakeSub));
+    shoot.whileActiveContinuous(new ParallelCommandGroup(
+      new ShootPIDCommand(shooterSub),
+      new KickCommand(shooterSub)));
     intake.whileActiveContinuous(new IntakeCommand(intakeSub, hopperSub));
     reset.whenPressed(new InstantCommand(driveSub::zeroGyroscope, driveSub));
 

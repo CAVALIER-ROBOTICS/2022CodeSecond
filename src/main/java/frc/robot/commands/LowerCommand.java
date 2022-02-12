@@ -39,10 +39,7 @@ public class LowerCommand extends CommandBase {
   @Override
   public boolean isFinished() 
   {
-    if(intakeSub.getRaiseEnc()<5)
-    {
-      return true;
-    }
+    
     return false;
   }
 }

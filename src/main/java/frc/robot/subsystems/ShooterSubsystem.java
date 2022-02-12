@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
@@ -18,22 +19,28 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax kickerMotor = new CANSparkMax(Constants.kickerID,MotorType.kBrushless);
   CANSparkMax rightShooter = new CANSparkMax(Constants.rightShooterID,MotorType.kBrushless);
   CANSparkMax leftShooter = new CANSparkMax(Constants.leftShootID,MotorType.kBrushless);
+  RelativeEncoder leftEnc = leftShooter.getEncoder();
 
   CANSparkMax hoodMotor = new CANSparkMax(Constants.hoodID,MotorType.kBrushless);
   RelativeEncoder hoodEnc = hoodMotor.getEncoder();
 
   public ShooterSubsystem() 
   {
-    leftShooter.setInverted(true);
-    leftShooter.follow(rightShooter);
-    leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
-    leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+    
+    hoodMotor.setInverted(true);
+    rightShooter.follow(leftShooter, true);
+    // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
     kickerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
     kickerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
     // rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
     // rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+    hoodEnc.setPosition(0);
+  }
 
-
+  public void setHood(double x)
+  {
+    hoodMotor.set(x);
   }
 
   public void setKicker(double x)
@@ -43,12 +50,21 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setShooter(double x)
   {
-    rightShooter.set(x);
+    // rightShooter.set(x);
+    leftShooter.set(x);
+    SmartDashboard.putNumber("fly wheel", leftEnc.getVelocity());
+  }
+
+  public double getVolicty()
+  {
+    return leftEnc.getVelocity();
   }
   
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Hood Enc", hoodEnc.getPosition());
+
+    
   }
 }

@@ -4,34 +4,43 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.BangBangController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class KickCommand extends CommandBase {
-  /** Creates a new KickCommand. */
-  ShooterSubsystem shooterSub;
+public class ShootCommand extends CommandBase {
+  /** Creates a new ShootCommand. */
+  ShooterSubsystem shootSub;
+  BangBangController controller;
+  double setpoint = 4000;
+  double feed = 0.01;
 
-  public KickCommand(ShooterSubsystem k) {
+  public ShootCommand(ShooterSubsystem s) {
     // Use addRequirements() here to declare subsystem dependencies.
-    shooterSub = k;
-    addRequirements(k);
+    shootSub = s;
+    controller = new BangBangController();
+    addRequirements(s);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    shooterSub.setKicker(.9);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() 
+  {
+    shootSub.setKicker(0.5);
+    shootSub.setShooter(controller.calculate(shootSub.getVolicty(), setpoint));
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    shooterSub.setKicker(0);
+    shootSub.setShooter(0);
+    shootSub.setKicker(0);
+
   }
 
   // Returns true when the command should end.

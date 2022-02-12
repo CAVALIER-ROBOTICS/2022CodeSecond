@@ -6,29 +6,28 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.LimelightSubsystem;
-import frc.robot.subsystems.TurretSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AimCommand extends PIDCommand {
-  /** Creates a new AimCommand. */
-  public AimCommand(TurretSubsystem turretSub, LimelightSubsystem limeSub) {
+public class ShootPIDCommand extends PIDCommand {
+  /** Creates a new ShootPIDCommand. */
+  public ShootPIDCommand(ShooterSubsystem shootSub) {
     super(
         // The controller that the command will use
-        new PIDController(0.01, 0.025 , 0),
+        new PIDController(0.15, 0.1, 0.001),
         // This should return the measurement
-        limeSub::getX,
+        () -> shootSub.getVolicty(),
         // This should return the setpoint (can also be a constant)
-        () -> 0,
+        () -> 4000,
         // This uses the output
         output -> {
-          turretSub.aim(output);
+          shootSub.setShooter(output);
+          // Use the output here
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-    addRequirements(turretSub, limeSub);
   }
 
   // Returns true when the command should end.

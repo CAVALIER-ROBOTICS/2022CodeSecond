@@ -39,9 +39,6 @@ public class TurretSubsystem extends SubsystemBase {
   public void setTurret(double volt)
   {
     turret.set(volt);
-    //  if(volt>1||volt<-1) {
-    //    SmartDashboard.putBoolean("itShit", true);
-    //  }
     SmartDashboard.putNumber("volts", volt);
 
   }
@@ -53,24 +50,24 @@ public class TurretSubsystem extends SubsystemBase {
 
   public void aim(double x)
   {
-    if(getPos()>2 && getPos()<40)
+    if(getPos()>3 && getPos()<39)
     {
       setTurret(x);
     }
 
-    else if(getPos()<2)
+    else if(getPos()<3)
     {
-      while(getPos()<38)
+      while(getPos()<34)
       {
-        setTurret(.2);
+        setTurret(.4);
       }
       // setTurret(0);
     }
-    else if(getPos()>40)
+    else if(getPos()>39)
     {
-      while(getPos()>4)
+      while(getPos()>8)
       {
-        setTurret(-.2);
+        setTurret(-.4);
       }
       // setTurret(0);
     }
