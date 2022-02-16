@@ -27,6 +27,9 @@ public final class Constants {
     public static final int leftShootID = 15;
     public static final int rightShooterID = 14;
     public static final int hoodID = 16;
+    public static final int rightClimb = 22;
+    public static final int leftClimb = 23;
+
 
     public final static SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
         // Front left

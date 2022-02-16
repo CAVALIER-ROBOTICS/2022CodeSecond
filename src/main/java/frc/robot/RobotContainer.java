@@ -67,10 +67,10 @@ public class RobotContainer {
     // Configure the button bindings
     // configureButtonBindings();
 
-    // turretSub.setDefaultCommand(new SequentialCommandGroup(
-    //   new TurnTurretCommand(turretSub),
-    //   new StartTurretCommand(turretSub),
-    //   new AimCommand(turretSub, limeSub)));
+    turretSub.setDefaultCommand(new SequentialCommandGroup(
+      new TurnTurretCommand(turretSub),
+      new StartTurretCommand(turretSub),
+      new AimCommand(turretSub, limeSub)));
 
 
     // driveSub.setDefaultCommand(driveCommand);

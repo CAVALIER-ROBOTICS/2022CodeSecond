@@ -47,6 +47,6 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Raise Encoder Value", getRaiseEnc());
+    // SmartDashboard.putNumber("Raise Encoder Value", getRaiseEnc());
   }
 }

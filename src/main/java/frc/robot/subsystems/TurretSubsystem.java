@@ -17,13 +17,15 @@ public class TurretSubsystem extends SubsystemBase {
   RelativeEncoder encoder = turret.getEncoder();
   public int acceptedVolts = 30;
 
-  boolean right = false;
+  boolean turningR;
 
-  boolean left = false;
+  boolean turningL;
   
   public TurretSubsystem() 
   {
     // encoder.setPosition(0);
+    turningR = false;
+    turningL = false;
   }
 
   public double getPos()
@@ -48,36 +50,58 @@ public class TurretSubsystem extends SubsystemBase {
     encoder.setPosition(0);
   }
 
-  public void aim(double x)
+  public void aim(double temp)
   {
-    if(getPos()>3 && getPos()<39)
+    double x = temp; 
+
+    if(!turningR && !turningL)
     {
       setTurret(x);
     }
 
-    else if(getPos()<3)
+    if(getPos()<3)
     {
-      while(getPos()<34)
-      {
-        setTurret(.4);
-      }
-      // setTurret(0);
+      turningR = true;
+      x=0;
     }
+    
     else if(getPos()>39)
     {
-      while(getPos()>8)
-      {
-        setTurret(-.4);
-      }
-      // setTurret(0);
+      turningL = true;
+      x=0;
     }
-    SmartDashboard.putNumber("x", x);
+
+    if(getPos()>36 && turningR)
+    {
+      turningR = false;
+      x=0;
+    }
+
+    if(getPos()<6 && turningR)
+    {
+      turningL = false;
+      x=0;
+    }
+
+    if(turningL)
+    {
+      temp = 0.0;
+      setTurret(-.2);
+    }
+    else if(turningR)
+    {
+      temp = 0;
+      setTurret(0.2);
+    }
+    // SmartDashboard.putNumber("PID volt", x);
+    // SmartDashboard.putBoolean("turning left", turningL);
+    // SmartDashboard.putBoolean("turning right", turningR);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Turret Enc", encoder.getPosition());
+    SmartDashboard.putNumber("Turret Enc", encoder.getPosition());
     // SmartDashboard.putBoolean("right", right);
     // SmartDashboard.putBoolean("Left", left);
   }

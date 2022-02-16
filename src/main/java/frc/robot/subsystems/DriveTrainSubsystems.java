@@ -113,7 +113,7 @@ public class DriveTrainSubsystems extends SubsystemBase implements DriveTrainCon
   public void periodic() {
     // This method will be called once per sched uler run
     SmartDashboard.putString("Gyro Rotation: ", getGyroscopeRotation().toString());
-    SmartDashboard.putString("chassis speeds: ", chassisSpeeds.toString());
+    // SmartDashboard.putString("chassis speeds: ", chassisSpeeds.toString());
 
     // updateStates();
     // setModules();
@@ -124,7 +124,7 @@ public class DriveTrainSubsystems extends SubsystemBase implements DriveTrainCon
   public void updateOdo()
   {
     odo.update(pidgey.getRotation2d(), states[0],states[1],states[2],states[3]);
-    SmartDashboard.putString("Odo", ""+odo.getPoseMeters());
+    // SmartDashboard.putString("Odo", ""+odo.getPoseMeters());
   }
 
   public Pose2d getPose() 

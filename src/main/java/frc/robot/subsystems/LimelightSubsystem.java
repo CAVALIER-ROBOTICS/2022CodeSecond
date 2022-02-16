@@ -43,9 +43,9 @@ public class LimelightSubsystem extends SubsystemBase {
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
     area = ta.getDouble(0.0);
-    SmartDashboard.putNumber("X v",x);
-    SmartDashboard.putNumber("Y v", y);
-    SmartDashboard.putNumber("Area values", area);
+    // SmartDashboard.putNumber("X v",x);
+    // SmartDashboard.putNumber("Y v", y);
+    // SmartDashboard.putNumber("Area values", area);
   }
 
   public double getX()
@@ -68,4 +68,22 @@ public class LimelightSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     updateValues();
   }
+
+  // public double getDistance()
+  // {
+  //   return  (h2-h1) / Math.tan(a1+a2);
+  // }
+
+  // public double getRPM()
+  // {
+  //   if(getDistance()<2)
+  //   {
+  //     return 4000;
+  //   }
+
+  //   if(getDistance()>2&&getDistance()<6)
+  //   {
+  //     return 7000;
+  //   }
+  // }
 }

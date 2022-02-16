@@ -16,11 +16,11 @@ public class ShootPIDCommand extends PIDCommand {
   public ShootPIDCommand(ShooterSubsystem shootSub) {
     super(
         // The controller that the command will use
-        new PIDController(0.15, 0.1, 0.001),
+        new PIDController(0.155, 0.15, 0),
         // This should return the measurement
         () -> shootSub.getVolicty(),
         // This should return the setpoint (can also be a constant)
-        () -> 4000,
+        () -> 3000,
         // This uses the output
         output -> {
           shootSub.setShooter(output);
