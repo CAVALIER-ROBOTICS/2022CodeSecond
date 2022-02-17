@@ -5,22 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.HoodSubsystem;
 
 public class LowerHoodCommand extends CommandBase {
   /** Creates a new LowerHoodCommand. */
-  ShooterSubsystem shootSub;
-  public LowerHoodCommand(ShooterSubsystem s) {
+  HoodSubsystem hoodSub;
+  public LowerHoodCommand(HoodSubsystem h) {
     // Use addRequirements() here to declare subsystem dependencies.
-    shootSub = s;
-    addRequirements(s);
+    hoodSub = h;
+    addRequirements(h);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
-    shootSub.setHood(-.1);
+    hoodSub.setHood(-.1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,7 +31,7 @@ public class LowerHoodCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) 
   {
-    shootSub.setHood(0);
+    hoodSub.setHood(0);
   }
 
   // Returns true when the command should end.

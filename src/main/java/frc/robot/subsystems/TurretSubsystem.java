@@ -86,12 +86,12 @@ public class TurretSubsystem extends SubsystemBase {
     if(turningL)
     {
       temp = 0.0;
-      setTurret(-.2);
+      setTurret(-.4);
     }
     else if(turningR)
     {
       temp = 0;
-      setTurret(0.2);
+      setTurret(0.4);
     }
     // SmartDashboard.putNumber("PID volt", x);
     // SmartDashboard.putBoolean("turning left", turningL);

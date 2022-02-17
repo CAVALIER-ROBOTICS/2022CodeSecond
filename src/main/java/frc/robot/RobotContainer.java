@@ -15,31 +15,25 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.FieldDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.KickCommand;
-import frc.robot.commands.LowerCommand;
 import frc.robot.commands.LowerHoodCommand;
-import frc.robot.commands.RaiseCommand;
 import frc.robot.commands.RaiseHoodCommand;
 import frc.robot.commands.RobotDriveCommand;
-import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootPIDCommand;
 import frc.robot.commands.StartTurretCommand;
 import frc.robot.commands.TurnTurretCommand;
 import frc.robot.subsystems.DriveTrainSubsystems;
+import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 /**
@@ -54,10 +48,10 @@ public class RobotContainer {
 
   DriveTrainSubsystems driveSub = new DriveTrainSubsystems();
   TurretSubsystem turretSub = new TurretSubsystem();
-  LimelightSubsystem limeSub = new LimelightSubsystem();
   HopperSubsystem hopperSub = new HopperSubsystem();
   IntakeSubsystem intakeSub = new IntakeSubsystem();
   ShooterSubsystem shooterSub = new ShooterSubsystem();
+  HoodSubsystem hoodSub = new HoodSubsystem();
   PathPlannerTrajectory path;
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -65,12 +59,12 @@ public class RobotContainer {
     PathPlannerTrajectory path = PathPlanner.loadPath("Auto", 8, 5);
 
     // Configure the button bindings
-    // configureButtonBindings();
+    configureButtonBindings();
 
-    turretSub.setDefaultCommand(new SequentialCommandGroup(
-      new TurnTurretCommand(turretSub),
-      new StartTurretCommand(turretSub),
-      new AimCommand(turretSub, limeSub)));
+    // turretSub.setDefaultCommand(new SequentialCommandGroup(
+    //   new TurnTurretCommand(turretSub),
+    //   new StartTurretCommand(turretSub),
+    //   new AimCommand(turretSub)));
 
 
     // driveSub.setDefaultCommand(driveCommand);
@@ -105,8 +99,8 @@ public class RobotContainer {
     JoystickButton lowerHood = new JoystickButton(driver, 3);
 
  
-    raiseHood.whileActiveContinuous(new RaiseHoodCommand(shooterSub));
-    lowerHood.whileActiveContinuous(new LowerHoodCommand(shooterSub));
+    raiseHood.whileActiveContinuous(new RaiseHoodCommand(hoodSub));
+    lowerHood.whileActiveContinuous(new LowerHoodCommand(hoodSub));
     // raise.whileActiveContinuous(new InstantCommand(() -> intakeSub.setRaiseMotor(0.1), intakeSub));
     // lower.whileActiveContinuous(new InstantCommand(() -> intakeSub.setRaiseMotor(-0.1), intakeSub));
     // raiseIntake.whileActiveContinuous(new RaiseCommand(intakeSub));

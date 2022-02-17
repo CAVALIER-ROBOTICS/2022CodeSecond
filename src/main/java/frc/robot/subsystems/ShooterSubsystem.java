@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
@@ -21,13 +20,10 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax leftShooter = new CANSparkMax(Constants.leftShootID,MotorType.kBrushless);
   RelativeEncoder leftEnc = leftShooter.getEncoder();
 
-  CANSparkMax hoodMotor = new CANSparkMax(Constants.hoodID,MotorType.kBrushless);
-  RelativeEncoder hoodEnc = hoodMotor.getEncoder();
 
   public ShooterSubsystem() 
   {
     
-    hoodMotor.setInverted(true);
     rightShooter.follow(leftShooter, true);
     // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
     // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
@@ -35,12 +31,6 @@ public class ShooterSubsystem extends SubsystemBase {
     kickerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
     // rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
     // rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
-    hoodEnc.setPosition(0);
-  }
-
-  public void setHood(double x)
-  {
-    hoodMotor.set(x);
   }
 
   public void setKicker(double x)
@@ -62,9 +52,7 @@ public class ShooterSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Hood Enc", hoodEnc.getPosition());
-
+    // This method will be called once per scheduler ru
     
   }
 }

@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -69,21 +68,17 @@ public class LimelightSubsystem extends SubsystemBase {
     updateValues();
   }
 
-  // public double getDistance()
-  // {
-  //   return  (h2-h1) / Math.tan(a1+a2);
-  // }
+  public double getDistance()
+  {
+    return (2.74-.56) / Math.tan(10+getY());
+  }
 
-  // public double getRPM()
-  // {
-  //   if(getDistance()<2)
-  //   {
-  //     return 4000;
-  //   }
-
-  //   if(getDistance()>2&&getDistance()<6)
-  //   {
-  //     return 7000;
-  //   }
-  // }
+  public double getRPM()
+  {
+    if(getDistance()>2&&getDistance()<6)
+    {
+      return 4500;
+    }
+    return 3000;
+  }
 }
