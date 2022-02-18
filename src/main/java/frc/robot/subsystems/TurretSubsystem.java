@@ -71,13 +71,13 @@ public class TurretSubsystem extends SubsystemBase {
       x=0;
     }
 
-    if(getPos()>36 && turningR)
+    if(getPos()>34 && turningR)
     {
       turningR = false;
       x=0;
     }
 
-    if(getPos()<6 && turningR)
+    if(getPos()<8 && turningR)
     {
       turningL = false;
       x=0;

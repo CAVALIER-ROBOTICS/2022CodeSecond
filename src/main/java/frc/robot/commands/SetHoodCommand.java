@@ -29,6 +29,7 @@ public class SetHoodCommand extends PIDCommand {
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+    addRequirements(hoodSub,limeSub);
   }
 
   // Returns true when the command should end.

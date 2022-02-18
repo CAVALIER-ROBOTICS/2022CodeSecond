@@ -23,16 +23,25 @@ import frc.robot.commands.AimCommand;
 import frc.robot.commands.FieldDriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.KickCommand;
+import frc.robot.commands.LowerClimbCommand;
+import frc.robot.commands.LowerIntakeCommand;
 import frc.robot.commands.LowerHoodCommand;
+import frc.robot.commands.RaiseClimbCommand;
 import frc.robot.commands.RaiseHoodCommand;
+import frc.robot.commands.RaiseIntakeCommand;
 import frc.robot.commands.RobotDriveCommand;
+import frc.robot.commands.SetHoodCommand;
+import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShootPIDCommand;
 import frc.robot.commands.StartTurretCommand;
 import frc.robot.commands.TurnTurretCommand;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystems;
 import frc.robot.subsystems.HoodSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.KickerSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -45,6 +54,8 @@ import frc.robot.subsystems.TurretSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static Joystick driver = new Joystick(0);
+  public static Joystick operator = new Joystick(1);
+
 
   DriveTrainSubsystems driveSub = new DriveTrainSubsystems();
   TurretSubsystem turretSub = new TurretSubsystem();
@@ -52,6 +63,10 @@ public class RobotContainer {
   IntakeSubsystem intakeSub = new IntakeSubsystem();
   ShooterSubsystem shooterSub = new ShooterSubsystem();
   HoodSubsystem hoodSub = new HoodSubsystem();
+  LimelightSubsystem limeSub = new LimelightSubsystem();
+  ClimbSubsystem climbSub = new ClimbSubsystem();
+  KickerSubsystem kickSub = new KickerSubsystem();
+
   PathPlannerTrajectory path;
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -61,13 +76,14 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // turretSub.setDefaultCommand(new SequentialCommandGroup(
-    //   new TurnTurretCommand(turretSub),
-    //   new StartTurretCommand(turretSub),
-    //   new AimCommand(turretSub)));
+    turretSub.setDefaultCommand(new SequentialCommandGroup(
+      new TurnTurretCommand(turretSub),
+      new StartTurretCommand(turretSub),
+      new AimCommand(turretSub, limeSub)));
 
+    // shooterSub.setDefaultCommand(new ShootPIDCommand(shooterSub,limeSub));
 
-    // driveSub.setDefaultCommand(driveCommand);
+    // hoodSub.setDefaultCommand(new SetHoodCommand(hoodSub, limeSub));
 
     //passes conditional command into the default command of drive
     driveSub.setDefaultCommand(new FieldDriveCommand
@@ -89,25 +105,46 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    //Driver
     JoystickButton reset = new JoystickButton(driver, 4);
     JoystickButton changeDrive = new JoystickButton(driver,2);
-    JoystickButton intake = new JoystickButton(driver, 7);
     JoystickButton shoot = new JoystickButton(driver, 8);
-    // JoystickButton raiseIntake = new JoystickButton(driver, 3);
-    // JoystickButton lowerIntake = new JoystickButton(driver, 1);
-    JoystickButton raiseHood = new JoystickButton(driver, 1);
-    JoystickButton lowerHood = new JoystickButton(driver, 3);
+    JoystickButton raiseIntake = new JoystickButton(driver, 5);
+    JoystickButton lowerIntake = new JoystickButton(driver, 6);
 
- 
+
+    //OPerator
+    JoystickButton raiseHood = new JoystickButton(operator, 1);
+    JoystickButton lowerHood = new JoystickButton(operator, 3);
+    JoystickButton raiseClimb = new JoystickButton(operator, 8);
+    JoystickButton lowerClimb = new JoystickButton(operator, 7);
+    JoystickButton intake = new JoystickButton(operator, 2);
+    JoystickButton kicker = new JoystickButton(operator, 4);
+
+
+
+
+    raiseClimb.whileActiveContinuous(new RaiseClimbCommand(climbSub));
+    lowerClimb.whileActiveContinuous(new LowerClimbCommand(climbSub));
+
+
     raiseHood.whileActiveContinuous(new RaiseHoodCommand(hoodSub));
     lowerHood.whileActiveContinuous(new LowerHoodCommand(hoodSub));
-    // raise.whileActiveContinuous(new InstantCommand(() -> intakeSub.setRaiseMotor(0.1), intakeSub));
-    // lower.whileActiveContinuous(new InstantCommand(() -> intakeSub.setRaiseMotor(-0.1), intakeSub));
-    // raiseIntake.whileActiveContinuous(new RaiseCommand(intakeSub));
-    // lowerIntake.whileActiveContinuous(new LowerCommand(intakeSub));
+    
+    raiseIntake.whileActiveContinuous(new RaiseIntakeCommand(intakeSub));
+    lowerIntake.whileActiveContinuous(new LowerIntakeCommand(intakeSub));
+    
     shoot.whileActiveContinuous(new ParallelCommandGroup(
-      new ShootPIDCommand(shooterSub),
-      new KickCommand(shooterSub)));
+      new ShootPIDCommand(shooterSub,limeSub),
+      new KickCommand(kickSub)));
+     
+    kicker.whileActiveContinuous(new ParallelCommandGroup 
+    (
+      new KickCommand(kickSub),
+      new ShootCommand(shooterSub)
+    ));
+      
     intake.whileActiveContinuous(new IntakeCommand(intakeSub, hopperSub));
     reset.whenPressed(new InstantCommand(driveSub::zeroGyroscope, driveSub));
 

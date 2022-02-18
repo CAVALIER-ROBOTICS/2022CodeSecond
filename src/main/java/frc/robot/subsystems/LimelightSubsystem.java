@@ -77,8 +77,8 @@ public class LimelightSubsystem extends SubsystemBase {
   {
     if(getDistance()>2&&getDistance()<6)
     {
-      return 4500;
+      return 2000;
     }
-    return 3000;
+    return 1000;
   }
 }

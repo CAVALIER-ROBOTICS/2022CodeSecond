@@ -15,7 +15,6 @@ import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new KickerSubsystem. */
-  CANSparkMax kickerMotor = new CANSparkMax(Constants.kickerID,MotorType.kBrushless);
   CANSparkMax rightShooter = new CANSparkMax(Constants.rightShooterID,MotorType.kBrushless);
   CANSparkMax leftShooter = new CANSparkMax(Constants.leftShootID,MotorType.kBrushless);
   RelativeEncoder leftEnc = leftShooter.getEncoder();
@@ -27,15 +26,9 @@ public class ShooterSubsystem extends SubsystemBase {
     rightShooter.follow(leftShooter, true);
     // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
     // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
-    kickerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
-    kickerMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
-    // rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
-    // rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
-  }
-
-  public void setKicker(double x)
-  {
-    kickerMotor.set(x);
+    
+    rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
   }
 
   public void setShooter(double x)

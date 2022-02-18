@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +22,9 @@ public class HoodSubsystem extends SubsystemBase {
   public HoodSubsystem() {
     hoodMotor.setInverted(true);
     hoodEnc.setPosition(0);
+    hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+
   }
 
   public void setHood(double x)
@@ -33,9 +37,9 @@ public class HoodSubsystem extends SubsystemBase {
     return hoodEnc.getPosition();
   }
 
-  public double getSetpoint(double rpm, double distance) //convert rpm to meters per second
+  public double getSetpoint(double rpm, double distance) 
   {
-    double x = Math.acos((9.8*distance)/(rpm*eff*(4*Math.PI)/2362.2));
+    double x = Math.acos((9.8*distance)/(rpm*eff*(4*Math.PI)/2362.2)) * 1.27272;
     return x;
   }
 

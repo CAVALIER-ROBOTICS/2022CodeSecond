@@ -18,6 +18,15 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public ClimbSubsystem() {
     rightClimb.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    leftClimb.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
+    rightClimb.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+    leftClimb.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+  }
+
+  public void setClimb(double x)
+  {
+    rightClimb.set(x);
+    leftClimb.set(x);
   }
 
   @Override
