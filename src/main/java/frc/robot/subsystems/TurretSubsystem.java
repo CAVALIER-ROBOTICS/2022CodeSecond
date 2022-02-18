@@ -54,11 +54,15 @@ public class TurretSubsystem extends SubsystemBase {
   {
     double x = temp; 
 
+    
     if(!turningR && !turningL)
     {
       setTurret(x);
     }
 
+    x=0;
+
+    
     if(getPos()<3)
     {
       turningR = true;

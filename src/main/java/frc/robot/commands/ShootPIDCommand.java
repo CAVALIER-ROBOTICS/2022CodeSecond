@@ -18,14 +18,14 @@ public class ShootPIDCommand extends PIDCommand {
   public ShootPIDCommand(ShooterSubsystem shootSub, LimelightSubsystem limeSub) {
     super(
         // The controller that the command will use
-        new PIDController(0.1, 0.15, 0),
+        new PIDController(0.05, 0.2, 0),
         // This should return the measurement
         () -> shootSub.getVolicty(),
         // This should return the setpoint (can also be a constant)
         () -> limeSub.getRPM(),
         // This uses the output
         output -> {
-          shootSub.setShooter(output);
+          shootSub.setShooter(-output);
           // Use the output here
         });
     // Use addRequirements() here to declare subsystem dependencies.

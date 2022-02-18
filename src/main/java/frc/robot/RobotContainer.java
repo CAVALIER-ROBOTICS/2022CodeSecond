@@ -120,7 +120,7 @@ public class RobotContainer {
     JoystickButton raiseClimb = new JoystickButton(operator, 8);
     JoystickButton lowerClimb = new JoystickButton(operator, 7);
     JoystickButton intake = new JoystickButton(operator, 2);
-    JoystickButton kicker = new JoystickButton(operator, 4);
+    JoystickButton kicker = new JoystickButton(driver, 8);
 
 
 
@@ -135,16 +135,17 @@ public class RobotContainer {
     raiseIntake.whileActiveContinuous(new RaiseIntakeCommand(intakeSub));
     lowerIntake.whileActiveContinuous(new LowerIntakeCommand(intakeSub));
     
-    shoot.whileActiveContinuous(new ParallelCommandGroup(
+    shoot.whileActiveOnce(new ParallelCommandGroup(
       new ShootPIDCommand(shooterSub,limeSub),
       new KickCommand(kickSub)));
      
-    kicker.whileActiveContinuous(new ParallelCommandGroup 
-    (
-      new KickCommand(kickSub),
-      new ShootCommand(shooterSub)
-    ));
-      
+    // kicker.whileActiveContinuous(new ParallelCommandGroup 
+    // (
+    //   new KickCommand(kickSub),
+    //   new ShootCommand(shooterSub)
+    // ));
+    // kicker.whileActiveContinuous(new KickCommand(kickSub));
+
     intake.whileActiveContinuous(new IntakeCommand(intakeSub, hopperSub));
     reset.whenPressed(new InstantCommand(driveSub::zeroGyroscope, driveSub));
 

@@ -18,17 +18,22 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax rightShooter = new CANSparkMax(Constants.rightShooterID,MotorType.kBrushless);
   CANSparkMax leftShooter = new CANSparkMax(Constants.leftShootID,MotorType.kBrushless);
   RelativeEncoder leftEnc = leftShooter.getEncoder();
+  RelativeEncoder rightEnc = rightShooter.getEncoder();
+
 
 
   public ShooterSubsystem() 
   {
-    
-    rightShooter.follow(leftShooter, true);
+    leftShooter.setInverted(true);
+    rightShooter.follow(leftShooter, false);
+    // leftShooter.follow(rightShooter);
+
+
     // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
     // leftShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
     
-    rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 60000);
-    rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
+    rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 50000);
+    rightShooter.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 50500);
   }
 
   public void setShooter(double x)
@@ -40,7 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getVolicty()
   {
-    return leftEnc.getVelocity();
+    return rightEnc.getVelocity();
   }
   
   @Override
